@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for id in `lpass ls | grep '\/.\+ \[id' | awk '{print substr($4, 0, length($4) - 1)}'`; do
+for id in `lpass ls | grep '\/.\+ \[id' | sed -n 's/^.*\[id: \([0-9]*\)\].*$/\1/p'`; do
 	if [ "`lpass show $id | grep 'Private Key'`" ]; then
 		name=`lpass show $id --name`
 		key=`lpass show $id --field='Private Key'`
