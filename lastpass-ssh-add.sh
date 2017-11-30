@@ -5,9 +5,10 @@ for id in `lpass ls | grep '\/.\+ \[id' | sed -n 's/^.*\[id: \([0-9]*\)\].*$/\1/
 		name=`lpass show $id --name`
 		key=`lpass show $id --field='Private Key'`
 
-		if [ "$key" ]; then
+		if [ "$key" ] && [ ! -f ~/.ssh/$name ]; then
 			echo "Adding ssh-key: id = $id, name = $name"
-			`echo "$key" | ssh-add -`
+			echo "$key" > ~/.ssh/$name
+			chmod 400 ~/.ssh/$name
 		fi
 	fi
 done
